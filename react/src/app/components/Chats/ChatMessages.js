@@ -9,8 +9,8 @@ import axios from 'axios';
 import Messages from '../Messages/Messages';
 
 const topPanelTitle = <Avatar src="/img/user-3.png" />;
-const PanelTopColLeft = <IconButton href="index.html#/chats"><NavigateBefore /></IconButton>;
-const PanelTopColRight = <IconButton href="index.html#/whom-send"><ContentCreate /></IconButton>;
+const PanelTopColLeft = <IconButton href="/#/chats"><NavigateBefore /></IconButton>;
+const PanelTopColRight = <IconButton href="/#/whom-send"><ContentCreate /></IconButton>;
 
 export default class ChatMessages extends React.Component{
 
@@ -23,43 +23,11 @@ export default class ChatMessages extends React.Component{
         }
     }
 
-    componentDidMount(){
-        const config = new Config();
-        const userId = window.localStorage.getItem('userId');
 
-        axios({
-            method: 'get',
-            url: config.backendUrl + 'rest/message/',
-            resolveWithFullResponse: true,
-            params: {
-                userId: userId,
-                chatId: this.state.chatId,
-                method: 'LIST'
-            }
-        }).then(response => {
-            console.log(response.data);
-            this.setState({items: response.data})
-        }).catch(error => {
-
-        });
-    }
 
     render(){
-
-        if (this.state.items.length === 0) {
-            return (
-                <div>Please wait...</div>
-            );
-        } else {
-            return (
-                <div>
-                    {this.state.items.map((message, index) => (
-                            <Messages key={index} title={topPanelTitle} colLeft={PanelTopColLeft} colRight={PanelTopColRight} content={true} message={message}/>
-                        )
-                    )}
-                </div>
-
-            );
-        }
+        return (
+            <Messages title={topPanelTitle} colLeft={PanelTopColLeft} colRight={PanelTopColRight} content={true} chatId={this.state.chatId}/>
+        );
     }
 }
