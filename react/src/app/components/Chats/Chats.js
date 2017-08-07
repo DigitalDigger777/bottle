@@ -18,8 +18,8 @@ const styles = {
 };
 
 const topPanelTitle = "";
-const PanelTopColLeft = <Link to="index.html#/chats" style={styles.leftCol}>Изменить</Link>;
-const PanelTopColRight = <IconButton href="index.html#/whom-send"><ContentCreate /></IconButton>;
+const PanelTopColLeft = <Link to="/#/chats" style={styles.leftCol}>Изменить</Link>;
+const PanelTopColRight = <IconButton href="/#/whom-send"><ContentCreate /></IconButton>;
 
 const Chats = () => (
     <div>

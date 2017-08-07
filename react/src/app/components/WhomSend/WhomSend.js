@@ -41,7 +41,7 @@ const styles = {
 };
 
 const topPanelTitle = "Кому отправим?";
-const PanelTopColLeft =<IconButton href="index.html#/chats"><NavigateBefore /></IconButton>;
+const PanelTopColLeft =<IconButton href="/#/chats"><NavigateBefore /></IconButton>;
 const PanelTopColRight=<IconButton></IconButton>;
 
 const RandomUser = (props) => (
@@ -134,7 +134,7 @@ export default class WhomSend extends React.Component{
 
                             <div className="text-center"  style={{marginTop: '60px'}}>
                                 <RaisedButton
-                                    href="index.html#/whom-send/messages"
+                                    href="/#/whom-send/messages"
                                     label="Далее"
                                     primary={true}
                                     style={styles.primaryButton} />

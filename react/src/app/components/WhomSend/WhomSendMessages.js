@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import Messages from '../Messages/Messages';
 
 const topPanelTitle = <span>Кому отправим?</span>;
-const PanelTopColLeft = <IconButton href="index.html#/whom-send"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href="/#/whom-send"><NavigateBefore /></IconButton>;
 const PanelTopColRight = <IconButton></IconButton>;
 
 export default class ChatMessages extends React.Component{

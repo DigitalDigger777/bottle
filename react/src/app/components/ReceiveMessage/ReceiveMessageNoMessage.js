@@ -32,10 +32,10 @@ const styles = {
 
 const topPanelTitle = '';
 const PanelTopColLeft = <div></div>;
-const PanelTopColRight = <IconButton href="index.html#/whom-send"><ContentCreate /></IconButton>;
+const PanelTopColRight = <IconButton href="/#/whom-send"><ContentCreate /></IconButton>;
 
 const noMessageContent = () => (
-    <a href="index.html#/receive-message" style={{display: 'block'}}>
+    <a href="/#/receive-message" style={{display: 'block'}}>
         <div className="no-message">
             <h3 className="text-center">Никто ничего не прислал</h3>
             <h5 className="text-center">Потяните экран чтобы обновить</h5>

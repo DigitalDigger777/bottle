@@ -36,21 +36,21 @@ class NavigationBottom extends Component {
                             <BottomNavigationItem
                                 label="Получить послание"
                                 icon={chat_bubble}
-                                href="index.html#/receive-message-no-message"
+                                href="/#/receive-message-no-message"
                                 style={{paddingLeft: 0, paddingRight: 0, lineHeight: 1, textAlign: 'center'}}
                             />
 
                             <BottomNavigationItem
                                 label="Чаты"
                                 icon={chatIcon}
-                                href="index.html#/chats"
+                                href="/#/chats"
                                 style={{paddingLeft: 0, paddingRight: 0, lineHeight: 1, textAlign: 'center'}}
                             />
 
                             <BottomNavigationItem
                                 label="Настройки"
                                 icon={buildIcon}
-                                href="index.html#/settings"
+                                href="/#/settings"
                                 style={{paddingLeft: 0, paddingRight: 0, lineHeight: 1, textAlign: 'center'}}
                             >
 

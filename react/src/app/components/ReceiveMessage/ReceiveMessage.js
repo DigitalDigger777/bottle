@@ -35,7 +35,7 @@ const styles = {
 
 const topPanelTitle = '';
 const PanelTopColLeft = <div></div>;
-const PanelTopColRight = <IconButton href="index.html#/whom-send"><ContentCreate /></IconButton>;
+const PanelTopColRight = <IconButton href="/#/whom-send"><ContentCreate /></IconButton>;
 
 const noMessageContent = () => (
 

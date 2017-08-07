@@ -36,7 +36,7 @@ const styles = {
 };
 
 const topPanelTitle = <span style={styles.titleStyle}>Пол</span>;
-const PanelTopColLeft = <IconButton href="index.html#/settings"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
 export default class selectGender extends React.Component{
