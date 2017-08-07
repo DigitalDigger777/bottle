@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Config from '../Config';
 
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
@@ -105,6 +107,74 @@ export default class Settings extends React.Component{
         }
     }
 
+    componentDidMount(){
+        const config = new Config();
+        const userId = window.localStorage.getItem('userId');
+
+
+        axios({
+            method: 'get',
+            url: config.backendUrl + 'rest/user/',
+            resolveWithFullResponse: true,
+            params: {
+                userId: userId
+            }
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+
+        });
+    }
+
+    nameChangeHandle(e) {
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                name: e.target.value
+            });
+        }
+    }
+
+    nicknameChangeHandle(e) {
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                nickname: e.target.value
+            });
+        }
+    }
+
+    passwordChangeHandle(e) {
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                password: e.target.value
+            });
+        }
+    }
+
+    cityChangeHandle(e) {
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                city: e.target.value
+            });
+        }
+    }
+
+    birthdayChangeHandle(e, date) {
+
+        this.setState({
+            birthday: date
+        });
+
+    }
+
+    genderChangeHandle(e, value) {
+        console.log(value);
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                gender: value
+            });
+        }
+    }
+
     render(){
 
         return (
@@ -127,12 +197,14 @@ export default class Settings extends React.Component{
                                 hintText="Имя Фамилия"
                                 value="Иванов Никита"
                                 underlineShow={false}
+                                onChange={ e => this.nameChangeHandle(e) }
                             />
                             <Divider />
                             <TextField
-                                hintText="Имя Фамилия"
+                                hintText="Никнейм"
                                 value="ivanov97"
                                 underlineShow={false}
+                                onChange={ e => this.nicknameChangeHandle(e) }
                             />
                             <Divider />
                             <div className="input-row clearfix">
@@ -149,7 +221,9 @@ export default class Settings extends React.Component{
                                         style={styles.textField}
                                         hintStyle={styles.labelText}
                                         inputStyle={styles.input}
-                                        defaultDate={this.state.defaultDate} />
+                                        defaultDate={this.state.defaultDate}
+                                        onChange={ this.birthdayChangeHandle }
+                                    />
                                 </div>
                             </div>
                             <Divider style={{width: '100%'}} />

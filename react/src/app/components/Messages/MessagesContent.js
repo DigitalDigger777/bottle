@@ -16,9 +16,17 @@ export default class MessagesContent extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { width: window.innerWidth, height: window.innerHeight };
+
+        console.log(props);
+
+        this.state = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            message: props.message,
+            userId: window.localStorage.getItem('userId')
+        };
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-        console.log(this.state.width);
+        //console.log(this.state.message.user.id);
     }
 
     componentDidMount() {
@@ -32,8 +40,10 @@ export default class MessagesContent extends React.Component{
     }
 
     updateWindowDimensions() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
-
+        this.setState({
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
     }
 
     onItemClick(event) {
@@ -65,16 +75,13 @@ export default class MessagesContent extends React.Component{
     render(){
 
         return (
-            <div>
-                <div className="msg-in">
+
+                <div className={ this.state.message.user.id == this.state.userId ? `msg-in` : 'msg-out' } >
                     <div className="msg-body">
                         <div style={{overflow: 'hidden'}}>
                             <div className="clearfix" style={{width: this.state.width + 240}}>
                                 <div className="msg msg-float text" style={{width: this.state.width-80}}>
-                                    Контент по-прежнему устойчив
-                                    к изменениям спроса. Целевая
-                                    аудитория синхронизирует общественный побочный PR-эффект.
-                                    Такие дела 🤣🤣🤣
+                                    {this.state.message.message}
                                 </div>
                                 <div className="wrap-share-block" onClick={(e) => this.handleToggle(e)}>
                                     <div>
@@ -91,21 +98,23 @@ export default class MessagesContent extends React.Component{
                             </div>
                         </div>
                     </div>
-                    <div className="msg-footer">
+                    <div className={this.state.message.user.id == this.state.userId ? `msg-footer` : `msg-footer text-right`}>
                         29 марта, 11:30
                     </div>
+
+                    {/*<div className="msg-out">*/}
+                    {/*<div className="msg-body">*/}
+                    {/*<div className="msg img">*/}
+                    {/*<img src="img/img-in-msg.png" width="100%" alt=""/>*/}
+                    {/*</div>*/}
+                    {/*</div>*/}
+                    {/*<div className="msg-footer text-right">*/}
+                    {/*29 марта, 11:30*/}
+                    {/*</div>*/}
+                    {/*</div>*/}
                 </div>
-                <div className="msg-out">
-                    <div className="msg-body">
-                        <div className="msg img">
-                            <img src="img/img-in-msg.png" width="100%" alt=""/>
-                        </div>
-                    </div>
-                    <div className="msg-footer text-right">
-                        29 марта, 11:30
-                    </div>
-                </div>
-            </div>
+
+
         )
     }
 }

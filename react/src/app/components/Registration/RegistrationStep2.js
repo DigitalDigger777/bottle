@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import { Router } from 'react-router';
+import Config from '../Config';
+import axios from 'axios';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -42,11 +44,14 @@ export default class RegistrationStep2 extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleTouchTap     = this.handleTouchTap.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.codeChangeHandler  = this.codeChangeHandler.bind(this);
+        this.next               = this.next.bind(this);
 
         this.state = {
             open: false,
+            code: ''
         };
     }
 
@@ -62,6 +67,32 @@ export default class RegistrationStep2 extends React.Component {
         });
     };
 
+    codeChangeHandler(e) {
+
+        if (typeof e.target != 'undefined') {
+            this.setState({
+                code: e.target.value
+            });
+        }
+
+    }
+
+    next() {
+        //index.html#/registration/enter-user-data
+
+        const config = new Config();
+
+        axios.post(config.backendUrl + 'rest/auth/step-2', {
+            code: this.state.code
+        }).then(data => {
+            console.log(data.data);
+            window.location = '/#/registration/enter-user-data';
+            window.localStorage.setItem('userId', data.data.userId);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
     render(){
         return(
             <PageBottleBackground>
@@ -72,13 +103,14 @@ export default class RegistrationStep2 extends React.Component {
                         underlineShow={false}
                         style={styles.textField}
                         hintStyle={styles.labelText}
-                        inputStyle={styles.input} />
+                        inputStyle={styles.input}
+                        onChange={ e => this.codeChangeHandler(e) } />
                     <div className="text-center">
                         <RaisedButton
-                            href="index.html#/registration/enter-user-data"
                             label="Далее"
                             primary={true}
-                            style={styles.primaryButton} />
+                            style={styles.primaryButton}
+                            onClick={ this.next } />
                         <div>
                             <FlatButton
                                 label="Выслать код повторно"

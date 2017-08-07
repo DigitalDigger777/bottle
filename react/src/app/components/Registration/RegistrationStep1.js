@@ -1,11 +1,13 @@
 import React from 'react';
 import {render} from 'react-dom';
 import { Router } from 'react-router';
-
+import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Config from '../Config';
 
 import PageBottleBackground from '../PageBottleBackground/PageBottleBackground';
+
 
 const styles = {
     labelText: {
@@ -28,28 +30,70 @@ const styles = {
 
 }
 
-const Messages = () => (
-    <PageBottleBackground>
-        <div className="wrap-verif">
-            <TextField
-                hintText="Номер телефона"
-                fullWidth={true}
-                underlineShow={false}
-                style={styles.textField}
-                hintStyle={styles.labelText}
-                inputStyle={styles.input} />
-            <div className="text-center">
-                <RaisedButton
-                    href="index.html#/registration/enter-code"
-                    label="Далее"
-                    primary={true}
-                    style={styles.primaryButton} />
-            </div>
-        </div>
-        <div className="footer">
-            Вход
-        </div>
-    </PageBottleBackground>
-);
+export default class Messages extends React.Component {
+    constructor(props) {
+        super(props);
 
-export default Messages;
+        this.state = {
+            tel: ''
+        };
+
+        this.next = this.next.bind(this);
+    }
+
+    telInputChangeHandler(e) {
+        this.setState({
+            tel: e.target.value
+        });
+    }
+
+    next(e) {
+        console.log(this.state.tel);
+        const config = new Config();
+
+
+        axios.post(config.backendUrl + 'rest/auth/step-1', {
+            tel: this.state.tel
+        }).then(response => {
+            console.log(response.data);
+            if (response.data.status === 2) {
+                window.localStorage.setItem('userId', response.data.id);
+                window.location = '/#/chats';
+            } else {
+                window.location = '/#/registration/enter-code';
+            }
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    render() {
+        return (
+            <PageBottleBackground>
+                <div className="wrap-verif">
+                    <TextField
+                        hintText="Номер телефона"
+                        fullWidth={true}
+                        underlineShow={false}
+                        style={styles.textField}
+                        hintStyle={styles.labelText}
+                        inputStyle={styles.input}
+                        onChange={ e => this.telInputChangeHandler(e) }/>
+
+                    <div className="text-center">
+                        <RaisedButton
+                            label="Далее"
+                            primary={true}
+                            style={styles.primaryButton}
+                            onClick={ this.next }
+                        />
+                    </div>
+                </div>
+                <div className="footer">
+                    Вход
+                </div>
+            </PageBottleBackground>
+        )
+    }
+}

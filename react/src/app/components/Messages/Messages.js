@@ -58,14 +58,15 @@ export default class Messages extends React.Component{
 
     constructor(props){
         super(props);
-
+        //console.log(props.message);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             RandomUser: false,
             title: props.title,
             colLeft: props.colLeft,
             colRight: props.colRight,
-            content: props.content
+            content: props.content,
+            message: props.message
         }
     }
 
@@ -80,9 +81,9 @@ export default class Messages extends React.Component{
         return (
             <div className="messages">
                 <PanelTop title={this.state.title} colLeft={this.state.colLeft} colRight={this.state.colRight} />
-                <div className="msgs-list">
+                <div className="msgs-list" style={{paddingBottom: '20px', paddingTop: '0px'}}>
 
-                    {this.state.content ? <MessagesContent /> : ""}
+                    {this.state.content ? <MessagesContent message={this.state.message} /> : ""}
 
                 </div>
                 <Paper zDepth={1} className="footer">

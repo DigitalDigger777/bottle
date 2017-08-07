@@ -40,7 +40,7 @@ export default class Index extends React.Component {
                             <Route exact path="/registration/enter-user-data" component={RegistrationStep3}></Route>
                             <Route exact path="/registration/user-agreement" component={UserAgreement}></Route>
                             <Route exact path="/chats" component={Chats}></Route>
-                            <Route exact path="/chats/messages" component={ChatMessages}></Route>
+                            <Route exact path="/chats/messages/:chatId" component={ChatMessages}></Route>
                             <Route exact path="/settings" component={Settings}></Route>
                             <Route exact path="/settings/gender" component={SelectGender}></Route>
                             <Route exact path="/whom-send" component={WhomSend}></Route>
