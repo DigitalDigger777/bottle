@@ -103,26 +103,72 @@ export default class Settings extends React.Component{
         const defaultDate = new Date(1998, 7, 24);;
 
         this.state = {
-            defaultDate: defaultDate
+            defaultDate: defaultDate,
+            user: null
         }
+
+        this.birthdayChangeHandle = this.birthdayChangeHandle.bind(this);
     }
 
     componentDidMount(){
         const config = new Config();
         const userId = window.localStorage.getItem('userId');
 
+        this.checkSelectOptions(userId, data => {
+            window.localStorage.removeItem('settingSelectCountryId');
+            window.localStorage.removeItem('settingSelectCityId');
+            window.localStorage.removeItem('settingSelectGender');
+
+            axios({
+                method: 'get',
+                url: config.backendUrl + 'rest/user/',
+                resolveWithFullResponse: true,
+                params: {
+                    userId: userId
+                }
+            }).then(data => {
+                console.log(data);
+                this.setState({
+                    user: data.data[0],
+                    defaultDate: new Date(data.data[0].birthday.date)
+                })
+            }).catch(error => {
+
+            });
+        });
+    }
+
+    checkSelectOptions(userId, callback)
+    {
+        const config = new Config();
+
+        const countryId = window.localStorage.getItem('settingSelectCountryId');
+        const cityId    = window.localStorage.getItem('settingSelectCityId');
+        const gender    = window.localStorage.getItem('settingSelectGender');
+
+        let params = {
+            userId: userId
+        };
+
+        if (countryId) {
+            params.countryId = countryId;
+        }
+
+        if (cityId) {
+            params.cityId = cityId;
+        }
+
+        if (gender !== null) {
+            params.gender = gender;
+        }
 
         axios({
-            method: 'get',
+            method: 'put',
             url: config.backendUrl + 'rest/user/',
             resolveWithFullResponse: true,
-            params: {
-                userId: userId
-            }
-        }).then(data => {
-            console.log(data);
-        }).catch(error => {
-
+            params: params
+        }).then(callback).catch(error => {
+            console.log(error);
         });
     }
 
@@ -159,11 +205,26 @@ export default class Settings extends React.Component{
     }
 
     birthdayChangeHandle(e, date) {
+        const userId = window.localStorage.getItem('userId');
+        const config = new Config();
 
         this.setState({
             birthday: date
         });
 
+        axios({
+            method: 'put',
+            url: config.backendUrl + 'rest/user/',
+            resolveWithFullResponse: true,
+            params: {
+                userId: userId,
+                birthDay: date
+            }
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     genderChangeHandle(e, value) {
@@ -177,115 +238,140 @@ export default class Settings extends React.Component{
 
     render(){
 
-        return (
-            <div>
+        if (this.state.user) {
+            return (
+                <div>
 
-                <PanelTop title={topPanelTitle} colLeft={PanelTopColLeft} colRight={PanelTopColRight} />
+                    <PanelTop title={topPanelTitle} colLeft={PanelTopColLeft} colRight={PanelTopColRight}/>
 
-                <div className="wrap-content">
-                    <div className="text-center">
-                        <div className="wrap-uload-ava">
-                            <Avatar src="img/user-5.png" size={56} />
-                            <input type="file" style={styles.uploadInput} />
-                            <div>Изменить аватар</div>
+                    <div className="wrap-content">
+                        <div className="text-center">
+                            <div className="wrap-uload-ava">
+                                <Avatar src="img/user-5.png" size={56}/>
+                                <input type="file" style={styles.uploadInput}/>
+                                <div>Изменить аватар</div>
+                            </div>
+                        </div>
+                        <div>
+                            <Divider />
+                            <div className="group-input">
+                                <TextField
+                                    hintText="Имя Фамилия"
+                                    value={ this.state.user.name }
+                                    underlineShow={false}
+                                    onChange={ e => this.nameChangeHandle(e) }
+                                />
+                                <Divider />
+                                <TextField
+                                    hintText="Никнейм"
+                                    value={ this.state.user.nickname }
+                                    underlineShow={false}
+                                    onChange={ e => this.nicknameChangeHandle(e) }
+                                />
+                                <Divider />
+                                <div className="input-row clearfix">
+                                    <div className="col-60">
+                                        <div className="my-label">
+                                            Дата рождения
+                                        </div>
+                                    </div>
+                                    <div className="col-40">
+                                        <DatePicker
+                                            hintText="Дата рождения"
+                                            fullWidth={true}
+                                            underlineShow={false}
+                                            style={styles.textField}
+                                            hintStyle={styles.labelText}
+                                            inputStyle={styles.input}
+                                            defaultDate={this.state.defaultDate}
+                                            onChange={ this.birthdayChangeHandle }
+                                        />
+                                    </div>
+                                </div>
+                                <Divider style={{width: '100%'}}/>
+                                <div className="input-row clearfix">
+                                    <div className="col-60">
+                                        <div className="my-label">
+                                            Пол
+                                        </div>
+                                    </div>
+                                    <div className="col-40">
+                                        <div className="text-right">
+                                            <Link to="/settings/gender">{this.state.user.gender === 0 ? 'Мужской' : 'Женский'}</Link>
+                                        </div>
+                                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}}/>
+                                    </div>
+                                </div>
+                                <Divider style={{width: '100%'}}/>
+                                <div className="input-row clearfix">
+                                    <div className="col-60">
+                                        <div className="my-label">
+                                            Страна
+                                        </div>
+                                    </div>
+                                    <div className="col-40">
+                                        <div className="text-right">
+                                            <Link to="/settings/country">{this.state.user.country ? this.state.user.country.name : 'Страна'}</Link>
+                                        </div>
+                                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}}/>
+                                    </div>
+                                </div>
+                                <Divider style={{width: '100%'}}/>
+                                <div className="input-row-city clearfix">
+                                    <div className="col-40">
+                                        <div className="my-label">
+                                            Город
+                                        </div>
+                                    </div>
+                                    <div className="col-60">
+                                        <div className="text-right">
+                                            <Link to="/settings/city">{this.state.user.city ? this.state.user.city.name : 'Город'}</Link>
+                                        </div>
+                                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}}/>
+                                    </div>
+                                </div>
+                                <Divider style={{width: '100%'}}/>
+
+                            </div>
+                            <Divider style={{width: '100%', marginBottom: '20px'}}/>
+                            <Divider style={{width: '100%'}}/>
+                            {/*<div className="group-input">*/}
+                                {/*<div className="input-row clearfix">*/}
+                                    {/*<div className="col-60">*/}
+                                        {/*<div className="my-label">*/}
+                                            {/*Социальные сети*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-40">*/}
+                                        {/*<ChevronRight style={{position: 'absolute', right: '0', top: '12px'}}/>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<Divider style={{width: '100%', marginBottom: '20px'}}/>*/}
+                            {/*<Divider style={{width: '100%'}}/>*/}
+                            {/*<div className="group-input">*/}
+                                {/*<div className="input-row clearfix">*/}
+                                    {/*<div className="col-60">*/}
+                                        {/*<div className="my-label">*/}
+                                            {/*Настроить уведомления*/}
+                                        {/*</div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-40">*/}
+                                        {/*<ChevronRight style={{position: 'absolute', right: '0', top: '12px'}}/>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                            {/*<Divider style={{width: '100%'}}/>*/}
+
                         </div>
                     </div>
-                    <div>
-                        <Divider />
-                        <div className="group-input">
-                            <TextField
-                                hintText="Имя Фамилия"
-                                value="Иванов Никита"
-                                underlineShow={false}
-                                onChange={ e => this.nameChangeHandle(e) }
-                            />
-                            <Divider />
-                            <TextField
-                                hintText="Никнейм"
-                                value="ivanov97"
-                                underlineShow={false}
-                                onChange={ e => this.nicknameChangeHandle(e) }
-                            />
-                            <Divider />
-                            <div className="input-row clearfix">
-                                <div className="col-60">
-                                    <div className="my-label">
-                                        Дата рождения
-                                    </div>
-                                </div>
-                                <div className="col-40">
-                                    <DatePicker
-                                        hintText="Дата рождения"
-                                        fullWidth={true}
-                                        underlineShow={false}
-                                        style={styles.textField}
-                                        hintStyle={styles.labelText}
-                                        inputStyle={styles.input}
-                                        defaultDate={this.state.defaultDate}
-                                        onChange={ this.birthdayChangeHandle }
-                                    />
-                                </div>
-                            </div>
-                            <Divider style={{width: '100%'}} />
-                            <div className="input-row clearfix">
-                                <div className="col-60">
-                                    <div className="my-label">
-                                        Пол
-                                    </div>
-                                </div>
-                                <div className="col-40">
-                                    <div className="text-right"><Link to="/settings/gender">Мужской</Link></div>
-                                    <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-                                </div>
-                            </div>
-                            <Divider style={{width: '100%'}} />
-                            <div className="input-row clearfix">
-                                <div className="col-60">
-                                    <div className="my-label">
-                                        Город
-                                    </div>
-                                </div>
-                                <div className="col-40">
-                                    <div className="text-right">Москва</div>
-                                    <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-                                </div>
-                            </div>
-                            <Divider style={{width: '100%'}} />
-                        </div>
-                        <Divider style={{width: '100%', marginBottom: '20px'}} />
-                        <Divider style={{width: '100%'}} />
-                        <div className="group-input">
-                            <div className="input-row clearfix">
-                                <div className="col-60">
-                                    <div className="my-label">
-                                        Социальные сети
-                                    </div>
-                                </div>
-                                <div className="col-40">
-                                    <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-                                </div>
-                            </div>
-                        </div>
-                        <Divider style={{width: '100%', marginBottom: '20px'}} />
-                        <Divider style={{width: '100%'}} />
-                        <div className="group-input">
-                            <div className="input-row clearfix">
-                                <div className="col-60">
-                                    <div className="my-label">
-                                        Настроить уведомления
-                                    </div>
-                                </div>
-                                <div className="col-40">
-                                    <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-                                </div>
-                            </div>
-                        </div>
-                        <Divider style={{width: '100%'}} />
-
-                    </div>
+                    <NavigationBottom active={2}/>
                 </div>
-                <NavigationBottom active={2} />
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div>Load...</div>
+            )
+        }
     }
 }

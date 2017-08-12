@@ -39,7 +39,7 @@ const topPanelTitle = <span style={styles.titleStyle}>Пол</span>;
 const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
-export default class selectGender extends React.Component{
+export default class SelectOld extends React.Component{
 
     constructor(props){
         super(props);
@@ -47,13 +47,6 @@ export default class selectGender extends React.Component{
         this.state = {
 
         }
-
-        this.selectGender = this.selectGender.bind(this);
-    }
-
-    selectGender(gender) {
-        window.localStorage.setItem('settingSelectGender', gender);
-        window.location = '/#/settings';
     }
 
     render(){
@@ -65,8 +58,8 @@ export default class selectGender extends React.Component{
 
                 <div className="wrap-content">
                     <List className="select-list">
-                        <ListItem primaryText="Mужской" onClick={ (gender) => this.selectGender(0)}/>
-                        <ListItem primaryText="Женский" onClick={ (gender) => this.selectGender(1)} />
+                        <ListItem primaryText="Mужской" className="active"/>
+                        <ListItem primaryText="Женский" />
                     </List>
                 </div>
 

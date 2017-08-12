@@ -21,6 +21,9 @@ import ReceiveMessage from './components/ReceiveMessage/ReceiveMessage';
 import ReceiveMessageNoMessage from  './components/ReceiveMessage/ReceiveMessageNoMessage';
 import UserAgreement from './components/Registration/UserAgreement';
 import SelectGender from './components/Settings/SelectGender';
+import SelectCity from './components/Settings/SelectCity';
+import SelectCountry from './components/Settings/SelectCountry';
+import SelectOld from './components/Settings/SelectOld';
 
 import "../www/style.less";
 
@@ -42,11 +45,17 @@ export default class Index extends React.Component {
                             <Route exact path="/chats" component={Chats}></Route>
                             <Route exact path="/chats/messages/:chatId" component={ChatMessages}></Route>
                             <Route exact path="/settings" component={Settings}></Route>
-                            <Route exact path="/settings/gender" component={SelectGender}></Route>
+
                             <Route exact path="/whom-send" component={WhomSend}></Route>
                             <Route exact path="/whom-send/messages" component={WhomSendMessages}></Route>
                             <Route exact path="/receive-message-no-message" component={ReceiveMessageNoMessage}></Route>
                             <Route exact path="/receive-message" component={ReceiveMessage}></Route>
+
+                            {/*select options pages*/}
+                            <Route exact path="/settings/gender" component={SelectGender}></Route>
+                            <Route exact path="/settings/city" component={SelectCity}></Route>
+                            <Route exact path="/settings/country" component={SelectCountry}></Route>
+                            <Route exact path="/settings/old" component={SelectOld}></Route>
                         </div>
                     </HashRouter>
                 </MuiThemeProvider>

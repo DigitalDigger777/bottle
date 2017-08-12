@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import Config from '../Config';
+import axios from 'axios';
+
 import { Link } from 'react-router-dom';
 
 import Avatar from 'material-ui/Avatar';
@@ -35,24 +38,43 @@ const styles = {
     }
 };
 
-const topPanelTitle = <span style={styles.titleStyle}>Пол</span>;
+const topPanelTitle = <span style={styles.titleStyle}>Город</span>;
 const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
-export default class selectGender extends React.Component{
+export default class SelectCity extends React.Component{
 
     constructor(props){
         super(props);
 
         this.state = {
+            items: []
+        };
 
-        }
-
-        this.selectGender = this.selectGender.bind(this);
+        this.selectCity = this.selectCity.bind(this);
     }
 
-    selectGender(gender) {
-        window.localStorage.setItem('settingSelectGender', gender);
+    componentDidMount(){
+        const config = new Config();
+        const userId = window.localStorage.getItem('userId');
+
+        axios({
+            method: 'get',
+            url: config.backendUrl + 'rest/city/',
+            resolveWithFullResponse: true,
+            params: {
+                method: 'LIST'
+            }
+        }).then(response => {
+            // console.log(response.data);
+            this.setState({items: response.data})
+        }).catch(error => {
+
+        });
+    }
+
+    selectCity(cityId) {
+        window.localStorage.setItem('settingSelectCityId', cityId);
         window.location = '/#/settings';
     }
 
@@ -65,8 +87,9 @@ export default class selectGender extends React.Component{
 
                 <div className="wrap-content">
                     <List className="select-list">
-                        <ListItem primaryText="Mужской" onClick={ (gender) => this.selectGender(0)}/>
-                        <ListItem primaryText="Женский" onClick={ (gender) => this.selectGender(1)} />
+                        { this.state.items.map((city, index) => (
+                            <ListItem key={index} primaryText={city.name} onClick={id => this.selectCity(city.id)}/>
+                        ))}
                     </List>
                 </div>
 

@@ -54,7 +54,9 @@ const RandomUser = (props) => (
                 </div>
             </div>
             <div className="col-40">
-                <div className="text-right">Россия</div>
+                <div className="text-right">
+                    <Link to="/settings/country">Россия</Link>
+                </div>
                 <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
             </div>
         </div>
@@ -66,7 +68,9 @@ const RandomUser = (props) => (
                 </div>
             </div>
             <div className="col-40">
-                <div className="text-right">Мужской</div>
+                <div className="text-right">
+                    <Link to="/settings/gender">Мужской</Link>
+                </div>
                 <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
             </div>
         </div>
@@ -78,7 +82,9 @@ const RandomUser = (props) => (
                 </div>
             </div>
             <div className="col-40">
-                <div className="text-right">12—56</div>
+                <div className="text-right">
+                    <Link to="/settings/old">12—56</Link>
+                </div>
                 <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
             </div>
         </div>
