@@ -8,6 +8,8 @@ import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import {List, ListItem} from 'material-ui/List';
+
+import Slider from 'material-ui/Slider';
 import NavigateBefore from 'material-ui/svg-icons/image/navigate-before';
 
 import PanelTop from '../PanelTop';
@@ -36,7 +38,7 @@ const styles = {
 };
 
 const topPanelTitle = <span style={styles.titleStyle}>Пол</span>;
-const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href={window.localStorage.getItem('settingRedirectUrl')}><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
 export default class SelectOld extends React.Component{
@@ -45,9 +47,24 @@ export default class SelectOld extends React.Component{
         super(props);
 
         this.state = {
-
-        }
+            ageFrom: 18,
+            ageTo: 19
+        };
+        this.handleAgeFrom = this.handleAgeFrom.bind(this);
+        this.handleAgeTo = this.handleAgeTo.bind(this);
     }
+
+
+    handleAgeFrom (event, value) {
+        this.setState({ageFrom: value});
+        this.setState({ageTo: value + 1});
+        window.localStorage.setItem('ageFrom', value);
+    };
+
+    handleAgeTo (event, value) {
+        this.setState({ageTo: value});
+        window.localStorage.setItem('ageTo', value);
+    };
 
     render(){
 
@@ -57,10 +74,31 @@ export default class SelectOld extends React.Component{
                 <PanelTop title={topPanelTitle} colLeft={PanelTopColLeft} colRight={PanelTopColRight} />
 
                 <div className="wrap-content">
-                    <List className="select-list">
-                        <ListItem primaryText="Mужской" className="active"/>
-                        <ListItem primaryText="Женский" />
-                    </List>
+                    <div style={{width: '90%', marginLeft: '5%'}}>
+                        <Slider
+                            min={18}
+                            max={100}
+                            step={1}
+                            value={this.state.ageFrom}
+                            onChange={this.handleAgeFrom }
+                        />
+                        <p>
+                            <span>{'Возраст от: '}</span>
+                            <span>{this.state.ageFrom}</span>
+                        </p>
+
+                        <Slider
+                            min={19}
+                            max={100}
+                            step={1}
+                            value={this.state.ageTo}
+                            onChange={this.handleAgeTo }
+                        />
+                        <p>
+                            <span>{'Возраст до: '}</span>
+                            <span>{this.state.ageTo}</span>
+                        </p>
+                    </div>
                 </div>
 
                 <NavigationBottom active={2} />

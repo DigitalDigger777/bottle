@@ -39,7 +39,7 @@ const styles = {
 };
 
 const topPanelTitle = <span style={styles.titleStyle}>Город</span>;
-const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href={window.localStorage.getItem('settingRedirectUrl')}><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
 export default class SelectCity extends React.Component{
@@ -73,9 +73,17 @@ export default class SelectCity extends React.Component{
         });
     }
 
-    selectCity(cityId) {
+    selectCity(cityId, name) {
+        const settingRedirectUrl = window.localStorage.getItem('settingRedirectUrl');
+
         window.localStorage.setItem('settingSelectCityId', cityId);
-        window.location = '/#/settings';
+        window.localStorage.setItem('settingSelectCity', name);
+
+        if (!settingRedirectUrl) {
+            window.location = '/#/settings';
+        } else {
+            window.location = settingRedirectUrl;
+        }
     }
 
     render(){
@@ -88,7 +96,7 @@ export default class SelectCity extends React.Component{
                 <div className="wrap-content">
                     <List className="select-list">
                         { this.state.items.map((city, index) => (
-                            <ListItem key={index} primaryText={city.name} onClick={id => this.selectCity(city.id)}/>
+                            <ListItem key={index} primaryText={city.name} onClick={(id, name) => this.selectCity(city.id, city.name)}/>
                         ))}
                     </List>
                 </div>

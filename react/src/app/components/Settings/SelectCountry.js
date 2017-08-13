@@ -39,7 +39,7 @@ const styles = {
 };
 
 const topPanelTitle = <span style={styles.titleStyle}>Страна</span>;
-const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href={window.localStorage.getItem('settingRedirectUrl')}><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
 export default class SelectCountry extends React.Component{
@@ -73,9 +73,17 @@ export default class SelectCountry extends React.Component{
         });
     }
 
-    selectCountry(countryId) {
+    selectCountry(countryId, name) {
+        const settingRedirectUrl = window.localStorage.getItem('settingRedirectUrl');
         window.localStorage.setItem('settingSelectCountryId', countryId);
-        window.location = '/#/settings';
+        window.localStorage.setItem('settingSelectCountry', name);
+
+        if (!settingRedirectUrl) {
+            window.location = '/#/settings';
+        } else {
+            window.location = settingRedirectUrl;
+        }
+
     }
 
     render(){
@@ -88,7 +96,7 @@ export default class SelectCountry extends React.Component{
                     <div className="wrap-content">
                         <List className="select-list">
                             { this.state.items.map((country, index) => (
-                                <ListItem key={index} primaryText={country.name} onClick={ id => this.selectCountry(country.id) } />
+                                <ListItem key={index} primaryText={country.name} onClick={ (id, name) => this.selectCountry(country.id, country.name) } />
                             ))}
 
                         </List>

@@ -25,6 +25,12 @@ class NavigationBottom extends Component {
         this.state = {
             selectedIndex: props.active,
         }
+
+        this.clickSetting = this.clickSetting.bind(this);
+    }
+
+    clickSetting() {
+        window.localStorage.setItem('settingRedirectUrl', '/#/setting');
     }
 
     render() {
@@ -52,6 +58,7 @@ class NavigationBottom extends Component {
                                 icon={buildIcon}
                                 href="/#/settings"
                                 style={{paddingLeft: 0, paddingRight: 0, lineHeight: 1, textAlign: 'center'}}
+                                onClick={ this.clickSetting }
                             >
 
                             </BottomNavigationItem>

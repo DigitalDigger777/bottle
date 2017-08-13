@@ -36,7 +36,7 @@ const styles = {
 };
 
 const topPanelTitle = <span style={styles.titleStyle}>Пол</span>;
-const PanelTopColLeft = <IconButton href="/#/settings"><NavigateBefore /></IconButton>;
+const PanelTopColLeft = <IconButton href={window.localStorage.getItem('settingRedirectUrl')}><NavigateBefore /></IconButton>;
 const PanelTopColRight = <div style={{width: 40}}></div>;
 
 export default class selectGender extends React.Component{
@@ -51,9 +51,17 @@ export default class selectGender extends React.Component{
         this.selectGender = this.selectGender.bind(this);
     }
 
-    selectGender(gender) {
+    selectGender(gender, name) {
+        const settingRedirectUrl = window.localStorage.getItem('settingRedirectUrl');
+
         window.localStorage.setItem('settingSelectGender', gender);
-        window.location = '/#/settings';
+        window.localStorage.setItem('settingSelectGenderName', name);
+
+        if (!settingRedirectUrl) {
+            window.location = '/#/settings';
+        } else {
+            window.location = settingRedirectUrl;
+        }
     }
 
     render(){
@@ -65,8 +73,8 @@ export default class selectGender extends React.Component{
 
                 <div className="wrap-content">
                     <List className="select-list">
-                        <ListItem primaryText="Mужской" onClick={ (gender) => this.selectGender(0)}/>
-                        <ListItem primaryText="Женский" onClick={ (gender) => this.selectGender(1)} />
+                        <ListItem primaryText="Мужской" onClick={ (gender) => this.selectGender(0, "Мужской")}/>
+                        <ListItem primaryText="Женский" onClick={ (gender) => this.selectGender(1, "Женский")} />
                     </List>
                 </div>
 

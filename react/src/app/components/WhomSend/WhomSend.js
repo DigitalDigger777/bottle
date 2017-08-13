@@ -44,55 +44,91 @@ const topPanelTitle = "Кому отправим?";
 const PanelTopColLeft =<IconButton href="/#/chats"><NavigateBefore /></IconButton>;
 const PanelTopColRight=<IconButton></IconButton>;
 
-const RandomUser = (props) => (
-    <div>
-        <Divider style={{width: '100%'}} />
-        <div className="input-row clearfix">
-            <div className="col-60">
-                <div className="my-label">
-                    Страна
-                </div>
-            </div>
-            <div className="col-40">
-                <div className="text-right">
-                    <Link to="/settings/country">Россия</Link>
-                </div>
-                <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-            </div>
-        </div>
-        <Divider style={{width: '100%'}} />
-        <div className="input-row clearfix">
-            <div className="col-60">
-                <div className="my-label">
-                    Пол
-                </div>
-            </div>
-            <div className="col-40">
-                <div className="text-right">
-                    <Link to="/settings/gender">Мужской</Link>
-                </div>
-                <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-            </div>
-        </div>
-        <Divider style={{width: '100%'}} />
-        <div className="input-row clearfix">
-            <div className="col-60">
-                <div className="my-label">
-                    Возраст
-                </div>
-            </div>
-            <div className="col-40">
-                <div className="text-right">
-                    <Link to="/settings/old">12—56</Link>
-                </div>
-                <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
-            </div>
-        </div>
-        <Divider style={{width: '100%'}} />
-    </div>
-);
+export class RandomUser extends React.Component {
+    constructor(props){
+        super(props);
 
-export default class WhomSend extends React.Component{
+        this.state = {
+            country: window.localStorage.getItem('settingSelectCountry'),
+            city: window.localStorage.getItem('settingSelectCity'),
+            gender: window.localStorage.getItem('settingSelectGenderName'),
+            ageFrom: window.localStorage.getItem('ageFrom'),
+            ageTo: window.localStorage.getItem('ageTo')
+        };
+
+        this.changeRedirect = this.changeRedirect.bind(this);
+    }
+
+    changeRedirect() {
+        window.localStorage.setItem('settingRedirectUrl', '/#/whom-send');
+    }
+
+    render(){
+        return(
+            <div>
+                <Divider style={{width: '100%'}} />
+                <div className="input-row clearfix">
+                    <div className="col-60">
+                        <div className="my-label">
+                            Страна
+                        </div>
+                    </div>
+                    <div className="col-40">
+                        <div className="text-right">
+                            <Link to="/settings/country" onClick={ this.changeRedirect }>{ this.state.country ? this.state.country : 'Страна'}</Link>
+                        </div>
+                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
+                    </div>
+                </div>
+                <Divider style={{width: '100%'}} />
+                <div className="input-row-city clearfix">
+                    <div className="col-40">
+                        <div className="my-label">
+                            Город
+                        </div>
+                    </div>
+                    <div className="col-60">
+                        <div className="text-right">
+                            <Link to="/settings/city" onClick={ this.changeRedirect }>{ this.state.city ? this.state.city : 'Город'}</Link>
+                        </div>
+                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
+                    </div>
+                </div>
+                <Divider style={{width: '100%'}} />
+                <div className="input-row clearfix">
+                    <div className="col-60">
+                        <div className="my-label">
+                            Пол
+                        </div>
+                    </div>
+                    <div className="col-40">
+                        <div className="text-right">
+                            <Link to="/settings/gender" onClick={ this.changeRedirect }>{ this.state.gender ? this.state.gender : 'Мужской'}</Link>
+                        </div>
+                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
+                    </div>
+                </div>
+                <Divider style={{width: '100%'}} />
+                <div className="input-row clearfix">
+                    <div className="col-60">
+                        <div className="my-label">
+                            Возраст
+                        </div>
+                    </div>
+                    <div className="col-40">
+                        <div className="text-right">
+                            <Link to="/settings/old">{this.state.ageFrom ? this.state.ageFrom : 18 }—{this.state.ageTo ? this.state.ageTo : 19 }</Link>
+                        </div>
+                        <ChevronRight style={{position: 'absolute', right: '0', top: '12px'}} />
+                    </div>
+                </div>
+                <Divider style={{width: '100%'}} />
+            </div>
+        );
+    }
+}
+
+export default class WhomSend extends React.Component {
 
     constructor(props){
         super(props);
