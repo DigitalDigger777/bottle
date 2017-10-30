@@ -2,3 +2,4 @@ node_modules/
 _www/
 platforms/
 .idea/
+react/src/app/components/Config.js
