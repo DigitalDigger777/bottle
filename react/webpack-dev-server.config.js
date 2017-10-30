@@ -6,6 +6,7 @@ const TransferWebpackPlugin = require('transfer-webpack-plugin');
 
 
 module.exports = {
+
     // Entry points to the project
     entry: [
         path.join(__dirname, '/src/app/app.js'),

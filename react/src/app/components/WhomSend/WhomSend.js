@@ -134,8 +134,17 @@ export default class WhomSend extends React.Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.next = this.next.bind(this);
+        let isRandom = window.localStorage.getItem('isRandom');
+
+        if (isRandom === null || isRandom === 'false') {
+            isRandom = false;
+        } else {
+            isRandom = true;
+        }
+
         this.state = {
-            RandomUser: false
+            RandomUser: isRandom
         }
     }
 
@@ -144,6 +153,11 @@ export default class WhomSend extends React.Component {
         this.setState({
             RandomUser: RandomUser
         });
+        window.localStorage.setItem('isRandom', RandomUser);
+    }
+
+    next() {
+        window.localStorage.setItem('sendMessageToStack', true);
     }
 
     render(){
@@ -165,7 +179,7 @@ export default class WhomSend extends React.Component {
                                 </div>
                                 <div className="col-40 text-right" style={{paddingRight: 0}}>
                                     <Toggle
-                                        defaultToggled={false}
+                                        defaultToggled={this.state.RandomUser}
                                         onToggle={this.handleChange}
                                         style={{marginTop: 12, marginBottom: 12, display: 'inline-block', width: 'auto'}}
                                     />
@@ -179,7 +193,9 @@ export default class WhomSend extends React.Component {
                                     href="/#/whom-send/messages"
                                     label="Далее"
                                     primary={true}
-                                    style={styles.primaryButton} />
+                                    style={styles.primaryButton}
+                                    onClick={ this.next }
+                                />
                             </div>
                         </div>
                     </div>

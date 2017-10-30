@@ -7,7 +7,10 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import ChatListItem from './ChatListItem';
 import axios from 'axios';
+import autobahn from 'autobahn';
+// import Websocket from 'react-websocket';
 import Config from '../../Config';
+
 
 // const usersData =[
 //     {
@@ -54,7 +57,8 @@ export default class ChatList extends React.Component
         super(props);
 
         this.state = {
-            items: []
+            items: [],
+            chatSocketConnection: null
         }
     }
 
@@ -62,20 +66,80 @@ export default class ChatList extends React.Component
         const config = new Config();
         const userId = window.localStorage.getItem('userId');
 
-        axios({
-            method: 'get',
-            url: config.backendUrl + 'rest/chat/',
-            resolveWithFullResponse: true,
+        axios.get(config.backendUrl + 'rest/chat/', {
             params: {
                 userId: userId,
                 method: 'LIST'
             }
-        }).then(response => {
-            console.log(response.data);
-            this.setState({items: response.data})
-        }).catch(error => {
+        })
+            .then(response => {
+               console.log('ssss', response);
+               this.setState({
+                   items: response.data
+               });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        // let conn = new WebSocket('ws://localhost:8080');
+        // console.log(conn);
+        // conn.onopen = function(e) {
+        //     console.log("Connection established!");
+        //     conn.send('Hello World!');
+        // };
+        //
+        // conn.onmessage = function(e) {
+        //     console.log(e.data);
+        // };
 
-        });
+
+        // this.state.chatSocketConnection = new autobahn.Connection({
+        //     url: 'ws://127.0.0.1:8080'
+        // });
+        // //console.log(this.state.chatSocketConnection);
+        // this.state.chatSocketConnection.onopen = (session) => {
+        //     console.log('send');
+        //     session.call('chatlist/chat_list', {"t1": 1, "t2": 2}).then(
+        //         (result) => {
+        //             console.log('rpc valid', result);
+        //         },
+        //         (error, desc) => {
+        //             console.log('rpc error', result);
+        //         }
+        //     );
+        //     this.state.chatSocketConnection.send('ssss');
+        // };
+        // this.state.chatSocketConnection.open();
+        // this.state.chatSocketConnection.onerror = (error) => {
+        //     console.log(error);
+        // };
+        // this.state.chatSocketConnection.onclose = (error) => {
+        //     console.log('close', error);
+        // };
+
+        //console.log('mmmm');
+
+        // axios({
+        //     method: 'get',
+        //     url: config.backendUrl + 'rest/chat/',
+        //     resolveWithFullResponse: true,
+        //     params: {
+        //         userId: userId,
+        //         method: 'LIST'
+        //     }
+        // }).then(response => {
+        //     console.log(response.data, 's12');
+        //
+        //     this.setState({items: response.data});
+        //     //this.state.chatSocket.close();
+        // }).catch(error => {
+        //
+        // });
+    }
+
+    componentWillUnmount(){
+        console.log('unmount');
+        // this.state.chatSocketConnection.close();
     }
 
     render(){

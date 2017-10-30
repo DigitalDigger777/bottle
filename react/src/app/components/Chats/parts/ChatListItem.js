@@ -36,7 +36,7 @@ export default class ChatListItem extends React.Component {
         // )
 
         return (
-            <Link to={`/chats/messages/` + this.state.message.id}>
+            <Link to={`/chats/messages/` + this.state.message.message.id}>
                 <div className="list-item">
                     <Avatar src={this.state.message.message.avatar}/>
                     <div className="msg">
@@ -45,7 +45,7 @@ export default class ChatListItem extends React.Component {
                     </div>
                     <div className="r-block">
                         <i className="material-icons">keyboard_arrow_right</i>
-                        <span>{this.state.message.message.message.date.date}</span>
+                        <span>{this.state.message[1]}</span>
                     </div>
                 </div>
             </Link>

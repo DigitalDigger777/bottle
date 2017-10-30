@@ -24,13 +24,13 @@ class NavigationBottom extends Component {
 
         this.state = {
             selectedIndex: props.active,
-        }
+        };
 
         this.clickSetting = this.clickSetting.bind(this);
     }
 
     clickSetting() {
-        window.localStorage.setItem('settingRedirectUrl', '/#/setting');
+        window.localStorage.setItem('settingRedirectUrl', '/#/settings');
     }
 
     render() {
