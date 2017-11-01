@@ -60,8 +60,12 @@ export default class Messages extends React.Component {
                 window.localStorage.setItem('userId', response.data.id);
                 window.location = '/#/chats';
             } else {
-                alert(response.data.code);
-                window.location = '/#/registration/enter-code';
+                // alert(response.data.code);
+                // original
+                // window.location = '/#/registration/enter-code';
+
+                //demo
+                window.location = '/#/registration/enter-code/' + response.data.code;
             }
 
         }).catch(error => {

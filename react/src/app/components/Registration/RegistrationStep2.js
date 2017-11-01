@@ -51,7 +51,8 @@ export default class RegistrationStep2 extends React.Component {
 
         this.state = {
             open: false,
-            code: ''
+            code: '',
+            tmpCode: typeof props.match.params.code != 'undefined' ? props.match.params.code : ''
         };
     }
 
@@ -97,6 +98,7 @@ export default class RegistrationStep2 extends React.Component {
         return(
             <PageBottleBackground>
                 <div className="wrap-verif">
+                    <div style={{color:'#ffffff'}}>код: {this.state.tmpCode}</div>
                     <TextField
                         hintText="Код из СМС"
                         fullWidth={true}

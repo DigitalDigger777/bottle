@@ -40,6 +40,8 @@ export default class Index extends React.Component {
                         <div>
                             <Route exact path="/" component={RegistrationStep1}></Route>
                             <Route exact path="/registration/enter-code" component={RegistrationStep2}></Route>
+                            <Route exact path="/registration/enter-code/:code" component={RegistrationStep2}></Route>
+
                             <Route exact path="/registration/enter-user-data" component={RegistrationStep3}></Route>
                             <Route exact path="/registration/user-agreement" component={UserAgreement}></Route>
                             <Route exact path="/chats" component={Chats}></Route>
